@@ -7,7 +7,6 @@ import (
 	"os"
 	"regexp"
 	"strconv"
-	"strings"
 )
 
 func main() {
@@ -30,18 +29,30 @@ func main() {
 			continue
 		}
 
-		min, err := strconv.Atoi(passwordRules[1])
+		pos1, err := strconv.Atoi(passwordRules[1])
 		if err != nil {
 			log.Fatal(err)
 		}
-		max, err := strconv.Atoi(passwordRules[2])
+		pos1 = pos1 - 1
+		pos2, err := strconv.Atoi(passwordRules[2])
 		if err != nil {
 			log.Fatal(err)
 		}
+		pos2 = pos2 - 1
 
-		count := strings.Count(passwordRules[4], passwordRules[3])
+		password := passwordRules[4]
+		keyRune := passwordRules[3]
+		//var firstPosition,secondPosition bool
+		//if pos1 < len(password) {
+		//	firstPosition = string([]rune(password)[min-1]) == keyRune
+		//}
+		firstPosition := string([]rune(password)[pos1]) == keyRune
+		secondPosition := string([]rune(password)[pos2]) == keyRune
+		//if max-1 < len(password)-1 {
+		//	secondPosition = string([]rune(password)[max-1]) == keyRune
+		//}
 
-		if count <= max && count >= min {
+		if (firstPosition || secondPosition) && !(firstPosition && secondPosition) {
 			correctPasswords++
 		}
 	}
